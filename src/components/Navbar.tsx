@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BrandLogo } from "./BrandLogo";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,15 +39,9 @@ export function Navbar() {
           height: "64px",
         }}
       >
-        <a href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="var(--accent)" />
-            <path d="M8 22V10l8 6-8 6zm8 0V10l8 6-8 6z" fill="var(--bg-primary)" opacity="0.9" />
-          </svg>
-          <span style={{ fontSize: "1.125rem", fontWeight: 600, letterSpacing: "-0.02em", color: "var(--text-primary)" }}>
-            Mira
-          </span>
-        </a>
+        <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <BrandLogo iconPx={28} />
+        </Link>
 
         <div style={{ display: "flex", alignItems: "center", gap: "2rem" }} className="desktop-only">
           {["Product", "Technology", "About"].map((item) => (

@@ -174,32 +174,86 @@ export function PainPoint() {
           ))}
         </div>
 
-        {/* Bottom line — offset right with amber glow */}
+        {/* Section takeaway — same card language as pains, aligned to 720px column */}
         <AnimateIn delay={0.6}>
           <div
             style={{
               marginTop: "2.5rem",
-              marginLeft: "auto",
-              maxWidth: "480px",
-              padding: "1.25rem 1.5rem",
-              background: "var(--accent-subtle)",
-              borderRadius: "8px",
-              borderLeft: "3px solid var(--accent)",
-              boxShadow: "0 0 40px rgba(245,158,11,0.06)",
+              maxWidth: "720px",
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "1.5rem",
+              padding: "1.75rem",
+              borderRadius: "12px",
+              background: "rgba(245,158,11,0.06)",
+              border: "1px solid var(--border-default)",
+              position: "relative",
+              overflow: "hidden",
+              transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-strong)";
+              e.currentTarget.style.boxShadow =
+                "0 0 30px rgba(245,158,11,0.08)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-default)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            <p
+            <div
               style={{
-                fontSize: "0.9375rem",
-                fontWeight: 500,
-                color: "var(--text-primary)",
-                lineHeight: 1.5,
+                position: "absolute",
+                left: 0,
+                top: "15%",
+                bottom: "15%",
+                width: "2px",
+                background:
+                  "linear-gradient(180deg, transparent, var(--agent-market), transparent)",
+                borderRadius: "1px",
+              }}
+            />
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.8125rem",
+                fontWeight: 600,
+                color: "var(--agent-market)",
+                whiteSpace: "nowrap",
+                minWidth: "110px",
+                paddingTop: "0.125rem",
+                letterSpacing: "-0.01em",
               }}
             >
-              The result: a{" "}
-              <span style={{ color: "var(--accent)", fontWeight: 700 }}>$250B+</span>{" "}
-              market that has never been truly scalable.
-            </p>
+              Takeaway
+            </div>
+            <div>
+              <h3
+                style={{
+                  fontSize: "1.125rem",
+                  fontWeight: 600,
+                  lineHeight: 1.3,
+                  color: "var(--text-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                The prize is huge — the model still isn’t.
+              </h3>
+              <p
+                style={{
+                  fontSize: "0.9375rem",
+                  lineHeight: 1.65,
+                  color: "var(--text-secondary)",
+                }}
+              >
+                Even at{" "}
+                <span style={{ color: "var(--agent-market)", fontWeight: 600 }}>
+                  $250B+
+                </span>{" "}
+                globally, recruiting mostly scales by adding people, not by
+                compounding systems — so the ceiling stays stubbornly human.
+              </p>
+            </div>
           </div>
         </AnimateIn>
       </div>

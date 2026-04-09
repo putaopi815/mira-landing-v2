@@ -20,6 +20,10 @@
   --accent-dim: rgba(245, 158, 11, 0.15);
   --accent-subtle: rgba(245, 158, 11, 0.06);
 
+  /* Logomark fills: same geometry as Pencil Brand/Logomark, colors match this page (amber + page bg) */
+  --brand-logomark-bg: var(--accent);
+  --brand-logomark-fg: var(--bg-primary);
+
   /* Agent colors — vivid on dark */
   --agent-demand: #2DD4BF;
   --agent-market: #F59E0B;

@@ -1,5 +1,7 @@
 "use client";
 
+import { BrandLogo } from "./BrandLogo";
+
 const footerLinks = {
   Product: ["Product", "Technology", "Pricing", "Changelog"],
   Company: ["About", "Careers", "Blog", "Contact"],
@@ -32,31 +34,8 @@ export function Footer() {
         >
           {/* Brand */}
           <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                marginBottom: "0.75rem",
-              }}
-            >
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                <rect width="32" height="32" rx="8" fill="var(--accent)" />
-                <path
-                  d="M8 22V10l8 6-8 6zm8 0V10l8 6-8 6z"
-                  fill="var(--bg-primary)"
-                  opacity="0.9"
-                />
-              </svg>
-              <span
-                style={{
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  color: "var(--text-primary)",
-                }}
-              >
-                Mira
-              </span>
+            <div style={{ marginBottom: "0.75rem" }}>
+              <BrandLogo iconPx={24} wordmarkSizePx={16.625} />
             </div>
             <p
               style={{
