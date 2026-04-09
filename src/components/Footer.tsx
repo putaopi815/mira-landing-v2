@@ -1,14 +1,12 @@
 "use client";
 
 import { BrandLogo } from "./BrandLogo";
-
-const footerLinks = {
-  Product: ["Product", "Technology", "Pricing", "Changelog"],
-  Company: ["About", "Careers", "Blog", "Contact"],
-  Legal: ["Privacy Policy", "Terms of Service"],
-};
+import { useLocaleContext } from "@/context/LocaleContext";
+import { footerColumnKeys } from "@/i18n/content";
 
 export function Footer() {
+  const { m } = useLocaleContext();
+
   return (
     <footer
       style={{
@@ -32,7 +30,6 @@ export function Footer() {
             marginBottom: "3rem",
           }}
         >
-          {/* Brand */}
           <div>
             <div style={{ marginBottom: "0.75rem" }}>
               <BrandLogo iconPx={24} wordmarkSizePx={16.625} />
@@ -45,13 +42,12 @@ export function Footer() {
                 maxWidth: "200px",
               }}
             >
-              AI recruiting that actually recruits.
+              {m.footer.tagline}
             </p>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
+          {footerColumnKeys.map((key) => (
+            <div key={key}>
               <h4
                 style={{
                   fontSize: "0.8125rem",
@@ -60,7 +56,7 @@ export function Footer() {
                   marginBottom: "0.875rem",
                 }}
               >
-                {heading}
+                {m.footer.columnTitles[key]}
               </h4>
               <ul
                 style={{
@@ -72,7 +68,7 @@ export function Footer() {
                   gap: "0.5rem",
                 }}
               >
-                {links.map((link) => (
+                {m.footer.columns[key].map((link) => (
                   <li key={link}>
                     <a
                       href="#"
@@ -98,7 +94,6 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Divider + Copyright */}
         <div
           style={{
             borderTop: "1px solid var(--border-default)",
@@ -116,17 +111,16 @@ export function Footer() {
               color: "var(--text-tertiary)",
             }}
           >
-            &copy; 2025 Mira. All rights reserved.
+            {m.footer.copyright}
           </p>
 
-          {/* Social icons placeholder */}
           <div
             style={{
               display: "flex",
               gap: "1rem",
             }}
           >
-            {["Twitter", "LinkedIn", "GitHub"].map((social) => (
+            {m.footer.social.map((social) => (
               <a
                 key={social}
                 href="#"

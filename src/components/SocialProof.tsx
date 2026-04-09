@@ -3,6 +3,7 @@
 import { AnimateIn } from "./AnimateIn";
 import { useInView } from "@/hooks/useInView";
 import { useEffect, useState } from "react";
+import { useLocaleContext } from "@/context/LocaleContext";
 
 function AnimatedNumber({
   target,
@@ -39,14 +40,16 @@ function AnimatedNumber({
   );
 }
 
-const stats = [
-  { num: 300, prefix: "", suffix: "+", label: "Internal users", sub: "actively using Mira", accent: "var(--agent-demand)" },
-  { num: 2, prefix: "#", suffix: "", label: "Worldwide", sub: "on BRIGHT benchmark", accent: "var(--accent)" },
-  { num: 4, prefix: "", suffix: "", label: "Papers", sub: "published on arXiv", accent: "var(--agent-talent)" },
-  { num: 3, prefix: "", suffix: "+", label: "Years of R&D", sub: "since 2022", accent: "var(--agent-roundtable)" },
-];
+const statMeta = [
+  { num: 300, prefix: "", suffix: "+", accent: "var(--agent-demand)" },
+  { num: 2, prefix: "#", suffix: "", accent: "var(--accent)" },
+  { num: 4, prefix: "", suffix: "", accent: "var(--agent-talent)" },
+  { num: 3, prefix: "", suffix: "+", accent: "var(--agent-roundtable)" },
+] as const;
 
 export function SocialProof() {
+  const { m } = useLocaleContext();
+
   return (
     <section
       id="about"
@@ -63,7 +66,7 @@ export function SocialProof() {
         }}
       >
         <AnimateIn>
-          <span className="section-tag">Traction</span>
+          <span className="section-tag">{m.social.tag}</span>
         </AnimateIn>
 
         <AnimateIn delay={0.1}>
@@ -79,12 +82,11 @@ export function SocialProof() {
               maxWidth: "480px",
             }}
           >
-            Not a Concept.{" "}
-            <span style={{ color: "var(--accent)" }}>Already Working.</span>
+            {m.social.heading}{" "}
+            <span style={{ color: "var(--accent)" }}>{m.social.headingAccent}</span>
           </h2>
         </AnimateIn>
 
-        {/* Stats — horizontal inline with accent colors per stat */}
         <AnimateIn delay={0.2}>
           <div
             style={{
@@ -97,56 +99,58 @@ export function SocialProof() {
               background: "linear-gradient(135deg, rgba(255,255,255,0.01) 0%, transparent 100%)",
             }}
           >
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                style={{
-                  flex: "1 1 140px",
-                  padding: "1.75rem 1.5rem",
-                  borderRight: i < 3 ? "1px solid var(--border-default)" : "none",
-                  position: "relative",
-                }}
-              >
+            {statMeta.map((meta, i) => {
+              const stat = m.social.stats[i];
+              return (
                 <div
+                  key={i}
                   style={{
-                    fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-                    fontWeight: 800,
-                    color: stat.accent,
-                    lineHeight: 1,
-                    marginBottom: "0.375rem",
-                    letterSpacing: "-0.04em",
+                    flex: "1 1 140px",
+                    padding: "1.75rem 1.5rem",
+                    borderRight: i < 3 ? "1px solid var(--border-default)" : "none",
+                    position: "relative",
                   }}
                 >
-                  <AnimatedNumber
-                    target={stat.num}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                  />
+                  <div
+                    style={{
+                      fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                      fontWeight: 800,
+                      color: meta.accent,
+                      lineHeight: 1,
+                      marginBottom: "0.375rem",
+                      letterSpacing: "-0.04em",
+                    }}
+                  >
+                    <AnimatedNumber
+                      target={meta.num}
+                      prefix={meta.prefix}
+                      suffix={meta.suffix}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8125rem",
+                      fontWeight: 600,
+                      color: "var(--text-primary)",
+                      marginBottom: "0.125rem",
+                    }}
+                  >
+                    {stat.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--text-tertiary)",
+                    }}
+                  >
+                    {stat.sub}
+                  </div>
                 </div>
-                <div
-                  style={{
-                    fontSize: "0.8125rem",
-                    fontWeight: 600,
-                    color: "var(--text-primary)",
-                    marginBottom: "0.125rem",
-                  }}
-                >
-                  {stat.label}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "var(--text-tertiary)",
-                  }}
-                >
-                  {stat.sub}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </AnimateIn>
 
-        {/* Background note */}
         <AnimateIn delay={0.4}>
           <p
             style={{
@@ -156,13 +160,11 @@ export function SocialProof() {
               maxWidth: "640px",
             }}
           >
-            Built by the AI team at{" "}
+            {m.social.footnoteBefore}
             <strong style={{ color: "var(--accent)", fontWeight: 600 }}>
-              Career International
-            </strong>{" "}
-            — one of China&apos;s largest publicly listed staffing firms — with
-            firsthand access to real recruiting workflows, real consultants, and
-            real placements.
+              {m.social.careerIntl}
+            </strong>
+            {m.social.footnoteAfter}
           </p>
         </AnimateIn>
       </div>

@@ -1,8 +1,11 @@
 "use client";
 
 import { AnimateIn } from "./AnimateIn";
+import { useLocaleContext } from "@/context/LocaleContext";
 
 export function FinalCTA() {
+  const { m } = useLocaleContext();
+
   return (
     <section
       style={{
@@ -12,7 +15,6 @@ export function FinalCTA() {
         overflow: "hidden",
       }}
     >
-      {/* Grid overlay */}
       <div
         className="grid-dark"
         style={{
@@ -23,7 +25,6 @@ export function FinalCTA() {
         }}
       />
 
-      {/* Primary amber glow orb — animated */}
       <div
         className="cta-glow-orb"
         style={{
@@ -39,7 +40,6 @@ export function FinalCTA() {
         }}
       />
 
-      {/* Secondary teal glow — offset left */}
       <div
         style={{
           position: "absolute",
@@ -54,7 +54,6 @@ export function FinalCTA() {
         }}
       />
 
-      {/* Tertiary purple glow — offset right */}
       <div
         style={{
           position: "absolute",
@@ -93,8 +92,8 @@ export function FinalCTA() {
               maxWidth: "700px",
             }}
           >
-            Your Next Great Hire Is Already Out There.{" "}
-            <span style={{ color: "var(--accent)" }}>Let Mira Find Them.</span>
+            {m.finalCta.title}{" "}
+            <span style={{ color: "var(--accent)" }}>{m.finalCta.titleAccent}</span>
           </h2>
         </AnimateIn>
 
@@ -108,8 +107,7 @@ export function FinalCTA() {
               marginBottom: "2.5rem",
             }}
           >
-            Three AI agents. Reasoning-first matching. Candidates who actually fit.
-            Start sourcing smarter — in minutes.
+            {m.finalCta.subtitle}
           </p>
         </AnimateIn>
 
@@ -132,7 +130,7 @@ export function FinalCTA() {
                 boxShadow: "0 0 30px rgba(245,158,11,0.2)",
               }}
             >
-              Start Free Trial
+              {m.finalCta.ctaTrial}
             </button>
             <button className="cta-secondary"
               style={{
@@ -140,7 +138,7 @@ export function FinalCTA() {
                 fontSize: "1rem",
               }}
             >
-              Book a Demo
+              {m.finalCta.ctaDemo}
             </button>
           </div>
         </AnimateIn>
@@ -152,7 +150,7 @@ export function FinalCTA() {
               color: "var(--text-tertiary)",
             }}
           >
-            No credit card required · Free to start · Cancel anytime
+            {m.finalCta.finePrint}
           </p>
         </AnimateIn>
       </div>

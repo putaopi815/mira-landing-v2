@@ -3,61 +3,28 @@
 import { AnimateIn } from "./AnimateIn";
 import { useInView } from "@/hooks/useInView";
 import { useEffect, useState } from "react";
+import { useLocaleContext } from "@/context/LocaleContext";
 
-const steps = [
-  {
-    num: "01",
-    label: "You Submit",
-    title: "Drop in a job requirement",
-    body: "Paste a JD, describe the role in your own words, or upload a brief. Mira takes it from there.",
-    accent: "var(--accent)",
-    glowColor: "rgba(245,158,11,0.2)",
-  },
-  {
-    num: "02",
-    label: "Agents Work",
-    title: "Three perspectives, running in parallel",
-    body: "Demand analyzes the role. Market scans the landscape. Talent searches for people. They start at the same time and adjust as insights come in.",
-    accent: "var(--agent-market)",
-    glowColor: "rgba(245,158,11,0.2)",
-  },
-  {
-    num: "03",
-    label: "Roundtable",
-    title: "They debate. You decide.",
-    body: "When agents disagree — on a candidate's fit, on market timing, on whether to relax a requirement — they hash it out. You see the reasoning and the final shortlist.",
-    accent: "var(--agent-roundtable)",
-    glowColor: "rgba(251,113,133,0.2)",
-  },
-];
+const stepStyle = [
+  { accent: "var(--accent)", glowColor: "rgba(245,158,11,0.2)" },
+  { accent: "var(--agent-market)", glowColor: "rgba(245,158,11,0.2)" },
+  { accent: "var(--agent-roundtable)", glowColor: "rgba(251,113,133,0.2)" },
+] as const;
 
-const chatMessages = [
-  {
-    agent: "Market",
-    color: "var(--agent-market)",
-    colorBg: "rgba(245,158,11,0.12)",
-    message:
-      "Meta just announced a FAIR restructure. Three team members in the target profile may be affected. Competition for these candidates will spike within 48 hours.",
-  },
-  {
-    agent: "Talent",
-    color: "var(--agent-talent)",
-    colorBg: "rgba(167,139,250,0.12)",
-    message:
-      "Adjusting to urgent priority. Also flagging a former colleague in the same group — adding to search.",
-  },
-  {
-    agent: "Demand",
-    color: "var(--agent-demand)",
-    colorBg: "rgba(45,212,191,0.12)",
-    message:
-      "If these candidates become available, the original salary range may not be competitive. Recommend increasing budget ceiling by 15%.",
-  },
-];
+const chatStyle = [
+  { color: "var(--agent-market)", colorBg: "rgba(245,158,11,0.12)" },
+  { color: "var(--agent-talent)", colorBg: "rgba(167,139,250,0.12)" },
+  { color: "var(--agent-demand)", colorBg: "rgba(45,212,191,0.12)" },
+] as const;
 
 export function HowItWorks() {
+  const { locale, m } = useLocaleContext();
   const { ref: chatRef, inView: chatInView } = useInView(0.2);
   const [visibleMessages, setVisibleMessages] = useState(0);
+
+  useEffect(() => {
+    setVisibleMessages(0);
+  }, [locale]);
 
   useEffect(() => {
     if (!chatInView) return;
@@ -65,10 +32,10 @@ export function HowItWorks() {
     const interval = setInterval(() => {
       idx++;
       setVisibleMessages(idx);
-      if (idx >= chatMessages.length) clearInterval(interval);
+      if (idx >= m.how.chat.length) clearInterval(interval);
     }, 700);
     return () => clearInterval(interval);
-  }, [chatInView]);
+  }, [chatInView, locale, m.how.chat.length]);
 
   return (
     <section
@@ -85,7 +52,7 @@ export function HowItWorks() {
         }}
       >
         <AnimateIn>
-          <span className="section-tag">How It Works</span>
+          <span className="section-tag">{m.how.tag}</span>
         </AnimateIn>
 
         <AnimateIn delay={0.1}>
@@ -101,14 +68,13 @@ export function HowItWorks() {
               maxWidth: "640px",
             }}
           >
-            Three Agents. One Shortlist.{" "}
+            {m.how.heading}{" "}
             <span style={{ color: "var(--text-secondary)" }}>
-              Zero Guesswork.
+              {m.how.headingRest}
             </span>
           </h2>
         </AnimateIn>
 
-        {/* Steps — horizontal timeline */}
         <div
           style={{
             display: "grid",
@@ -117,90 +83,91 @@ export function HowItWorks() {
             marginBottom: "4rem",
           }}
         >
-          {steps.map((step, i) => (
-            <AnimateIn key={i} delay={0.15 * (i + 1)}>
-              <div style={{ position: "relative" }}>
-                {/* Step number */}
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: step.accent,
-                    letterSpacing: "0.06em",
-                    marginBottom: "0.75rem",
-                  }}
-                >
-                  {step.num}
-                </div>
-
-                {/* Progress bar with glow */}
-                <div
-                  style={{
-                    height: "2px",
-                    background: "var(--border-default)",
-                    borderRadius: "1px",
-                    marginBottom: "1.5rem",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
+          {m.how.steps.map((step, i) => {
+            const style = stepStyle[i];
+            const num = String(i + 1).padStart(2, "0");
+            return (
+              <AnimateIn key={i} delay={0.15 * (i + 1)}>
+                <div style={{ position: "relative" }}>
                   <div
                     style={{
-                      position: "absolute",
-                      left: 0,
-                      top: 0,
-                      height: "100%",
-                      width: "100%",
-                      background: step.accent,
-                      borderRadius: "1px",
-                      boxShadow: `0 0 8px ${step.glowColor}`,
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      color: style.accent,
+                      letterSpacing: "0.06em",
+                      marginBottom: "0.75rem",
                     }}
-                  />
+                  >
+                    {num}
+                  </div>
+
+                  <div
+                    style={{
+                      height: "2px",
+                      background: "var(--border-default)",
+                      borderRadius: "1px",
+                      marginBottom: "1.5rem",
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
+                        height: "100%",
+                        width: "100%",
+                        background: style.accent,
+                        borderRadius: "1px",
+                        boxShadow: `0 0 8px ${style.glowColor}`,
+                      }}
+                    />
+                  </div>
+
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "0.6875rem",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      color: "var(--text-tertiary)",
+                      marginBottom: "0.5rem",
+                      display: "block",
+                    }}
+                  >
+                    {step.label}
+                  </span>
+
+                  <h3
+                    style={{
+                      fontSize: "1.25rem",
+                      fontWeight: 600,
+                      color: "var(--text-primary)",
+                      marginBottom: "0.625rem",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.65,
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    {step.body}
+                  </p>
                 </div>
-
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.6875rem",
-                    fontWeight: 500,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    color: "var(--text-tertiary)",
-                    marginBottom: "0.5rem",
-                    display: "block",
-                  }}
-                >
-                  {step.label}
-                </span>
-
-                <h3
-                  style={{
-                    fontSize: "1.25rem",
-                    fontWeight: 600,
-                    color: "var(--text-primary)",
-                    marginBottom: "0.625rem",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {step.title}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    lineHeight: 1.65,
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  {step.body}
-                </p>
-              </div>
-            </AnimateIn>
-          ))}
+              </AnimateIn>
+            );
+          })}
         </div>
 
-        {/* Roundtable Chat Simulation — glass card */}
         <AnimateIn delay={0.2}>
           <div
             className="glass-card"
@@ -212,7 +179,6 @@ export function HowItWorks() {
               boxShadow: "0 12px 40px rgba(0,0,0,0.4), 0 0 60px rgba(245,158,11,0.04)",
             }}
           >
-            {/* Header */}
             <div
               style={{
                 display: "flex",
@@ -240,11 +206,10 @@ export function HowItWorks() {
                   color: "var(--text-secondary)",
                 }}
               >
-                Roundtable — Live Discussion
+                {m.how.chatHeader}
               </span>
             </div>
 
-            {/* Messages */}
             <div
               ref={chatRef}
               style={{
@@ -254,62 +219,64 @@ export function HowItWorks() {
                 gap: "1rem",
               }}
             >
-              {chatMessages.map((msg, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    gap: "0.75rem",
-                    alignItems: "flex-start",
-                    opacity: i < visibleMessages ? 1 : 0,
-                    transform: i < visibleMessages ? "translateY(0)" : "translateY(12px)",
-                    transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  }}
-                >
-                  {/* Agent avatar */}
+              {m.how.chat.map((msg, i) => {
+                const cs = chatStyle[i];
+                return (
                   <div
+                    key={i}
                     style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "8px",
-                      background: msg.colorBg,
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.6875rem",
-                      fontWeight: 600,
-                      color: msg.color,
-                      flexShrink: 0,
+                      gap: "0.75rem",
+                      alignItems: "flex-start",
+                      opacity: i < visibleMessages ? 1 : 0,
+                      transform: i < visibleMessages ? "translateY(0)" : "translateY(12px)",
+                      transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                     }}
                   >
-                    {msg.agent[0]}
-                  </div>
-
-                  <div>
-                    <span
+                    <div
                       style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "8px",
+                        background: cs.colorBg,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.6875rem",
                         fontWeight: 600,
-                        fontSize: "0.875rem",
-                        color: msg.color,
-                        marginBottom: "0.25rem",
-                        display: "block",
+                        color: cs.color,
+                        flexShrink: 0,
                       }}
                     >
-                      {msg.agent}
-                    </span>
-                    <p
-                      style={{
-                        fontSize: "0.875rem",
-                        lineHeight: 1.6,
-                        color: "var(--text-secondary)",
-                      }}
-                    >
-                      {msg.message}
-                    </p>
+                      {msg.agent[0]}
+                    </div>
+
+                    <div>
+                      <span
+                        style={{
+                          fontWeight: 600,
+                          fontSize: "0.875rem",
+                          color: cs.color,
+                          marginBottom: "0.25rem",
+                          display: "block",
+                        }}
+                      >
+                        {msg.agent}
+                      </span>
+                      <p
+                        style={{
+                          fontSize: "0.875rem",
+                          lineHeight: 1.6,
+                          color: "var(--text-secondary)",
+                        }}
+                      >
+                        {msg.message}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </AnimateIn>

@@ -8,10 +8,11 @@ import { SocialProof } from "@/components/SocialProof";
 import { DigitalTwin } from "@/components/DigitalTwin";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
+import { LocaleProvider } from "@/context/LocaleContext";
 
 export default function Home() {
   return (
-    <>
+    <LocaleProvider>
       <Navbar />
       <main>
         <Hero />
@@ -24,6 +25,6 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
-    </>
+    </LocaleProvider>
   );
 }

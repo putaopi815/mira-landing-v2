@@ -1,15 +1,12 @@
 "use client";
 
 import { AnimateIn } from "./AnimateIn";
-
-const roadmap = [
-  { phase: "Now", label: "Sourcing", active: true },
-  { phase: "Next", label: "Outreach", active: false },
-  { phase: "Then", label: "Screening", active: false },
-  { phase: "Vision", label: "Full-Cycle", active: false },
-];
+import { useLocaleContext } from "@/context/LocaleContext";
 
 export function DigitalTwin() {
+  const { m } = useLocaleContext();
+  const pointNums = ["01", "02", "03"];
+
   return (
     <section
       style={{
@@ -26,7 +23,7 @@ export function DigitalTwin() {
         }}
       >
         <AnimateIn>
-          <span className="section-tag">Vision</span>
+          <span className="section-tag">{m.digital.tag}</span>
         </AnimateIn>
 
         <AnimateIn delay={0.1}>
@@ -42,8 +39,8 @@ export function DigitalTwin() {
               maxWidth: "560px",
             }}
           >
-            Stop Selling Hours.{" "}
-            <span style={{ color: "var(--accent)" }}>Start Building Assets.</span>
+            {m.digital.heading}{" "}
+            <span style={{ color: "var(--accent)" }}>{m.digital.headingAccent}</span>
           </h2>
         </AnimateIn>
 
@@ -57,16 +54,11 @@ export function DigitalTwin() {
               marginBottom: "3.5rem",
             }}
           >
-            Sourcing is just the beginning. Mira is building toward a future where
-            every recruiter owns a digital twin — an AI version of themselves that
-            carries their expertise, works around the clock, and gets better with
-            every placement.
+            {m.digital.intro}
           </p>
         </AnimateIn>
 
-        {/* Two-column: vision points (left) + roadmap (right) */}
         <div className="bento-row bento-7-5">
-          {/* Left column — stacked vision points without cards */}
           <AnimateIn delay={0.25}>
             <div
               style={{
@@ -75,23 +67,7 @@ export function DigitalTwin() {
                 gap: "0",
               }}
             >
-              {[
-                {
-                  num: "01",
-                  title: "Your Skills, Preserved",
-                  body: "Train your digital twin with your industry knowledge, selection criteria, and judgment calls. Your expertise becomes a durable, compounding asset.",
-                },
-                {
-                  num: "02",
-                  title: "24/7, Without Burnout",
-                  body: "Your digital twin sources candidates while you sleep, screens profiles while you're in meetings, and follows up while you focus on closing.",
-                },
-                {
-                  num: "03",
-                  title: "From Sourcing to Full-Cycle",
-                  body: "Today: AI-powered sourcing. Next: outreach, screening, interview coordination. The goal: a complete recruiting platform.",
-                },
-              ].map((point, i) => (
+              {m.digital.points.map((point, i) => (
                 <div
                   key={i}
                   style={{
@@ -111,7 +87,7 @@ export function DigitalTwin() {
                       flexShrink: 0,
                     }}
                   >
-                    {point.num}
+                    {pointNums[i]}
                   </span>
                   <div>
                     <h3
@@ -139,7 +115,6 @@ export function DigitalTwin() {
             </div>
           </AnimateIn>
 
-          {/* Right column — vertical roadmap */}
           <AnimateIn delay={0.4}>
             <div
               style={{
@@ -160,7 +135,7 @@ export function DigitalTwin() {
                   marginBottom: "1.5rem",
                 }}
               >
-                Platform Roadmap
+                {m.digital.roadmapTitle}
               </div>
 
               <div
@@ -171,7 +146,6 @@ export function DigitalTwin() {
                   position: "relative",
                 }}
               >
-                {/* Vertical line */}
                 <div
                   style={{
                     position: "absolute",
@@ -183,69 +157,71 @@ export function DigitalTwin() {
                   }}
                 />
 
-                {roadmap.map((item, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                      padding: "0.75rem 0",
-                      position: "relative",
-                    }}
-                  >
-                    {/* Dot */}
+                {m.digital.roadmap.map((item, i) => {
+                  const active = i === 0;
+                  return (
                     <div
+                      key={i}
                       style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "50%",
-                        background: item.active ? "var(--accent)" : "var(--bg-tertiary)",
-                        border: item.active ? "none" : "2px solid var(--border-default)",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        zIndex: 1,
+                        gap: "1rem",
+                        padding: "0.75rem 0",
+                        position: "relative",
                       }}
                     >
-                      {item.active && (
-                        <div
-                          style={{
-                            width: "8px",
-                            height: "8px",
-                            borderRadius: "50%",
-                            background: "var(--bg-primary)",
-                          }}
-                        />
-                      )}
-                    </div>
-
-                    <div>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.625rem",
-                          fontWeight: 600,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.06em",
-                          color: item.active ? "var(--accent)" : "var(--text-tertiary)",
-                        }}
-                      >
-                        {item.phase}
-                      </span>
                       <div
                         style={{
-                          fontSize: "0.9375rem",
-                          fontWeight: item.active ? 600 : 400,
-                          color: item.active ? "var(--text-primary)" : "var(--text-secondary)",
+                          width: "24px",
+                          height: "24px",
+                          borderRadius: "50%",
+                          background: active ? "var(--accent)" : "var(--bg-tertiary)",
+                          border: active ? "none" : "2px solid var(--border-default)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          zIndex: 1,
                         }}
                       >
-                        {item.label}
+                        {active && (
+                          <div
+                            style={{
+                              width: "8px",
+                              height: "8px",
+                              borderRadius: "50%",
+                              background: "var(--bg-primary)",
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      <div>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "0.625rem",
+                            fontWeight: 600,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.06em",
+                            color: active ? "var(--accent)" : "var(--text-tertiary)",
+                          }}
+                        >
+                          {item.phase}
+                        </span>
+                        <div
+                          style={{
+                            fontSize: "0.9375rem",
+                            fontWeight: active ? 600 : 400,
+                            color: active ? "var(--text-primary)" : "var(--text-secondary)",
+                          }}
+                        >
+                          {item.label}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </AnimateIn>

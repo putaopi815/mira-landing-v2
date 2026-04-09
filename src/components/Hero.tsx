@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLocaleContext } from "@/context/LocaleContext";
 
 export function Hero() {
+  const { m } = useLocaleContext();
   const [loaded, setLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -180,7 +182,7 @@ export function Hero() {
             marginBottom: "1.5rem",
           }}
         >
-          <span className="section-tag">AI Recruiting Platform</span>
+          <span className="section-tag">{m.hero.tag}</span>
         </div>
 
         <h1
@@ -197,10 +199,10 @@ export function Hero() {
             marginBottom: "1.5rem",
           }}
         >
-          Your AI Recruiting
+          {m.hero.titleLine1}
           <br />
-          Team.{" "}
-          <span style={{ color: "var(--accent)" }}>Always&nbsp;On.</span>
+          {m.hero.titleLine2}{" "}
+          <span style={{ color: "var(--accent)" }}>{m.hero.titleAccent}</span>
         </h1>
 
         <p
@@ -216,9 +218,7 @@ export function Hero() {
             marginBottom: "2.5rem",
           }}
         >
-          Three AI agents analyze demand, scan the market, and source
-          talent — in parallel, around the clock. You get a curated
-          shortlist, not a pile of resumes.
+          {m.hero.subtitle}
         </p>
 
         <div
@@ -234,8 +234,8 @@ export function Hero() {
             marginBottom: "0.75rem",
           }}
         >
-          <button className="cta-primary">Start Free Trial</button>
-          <button className="cta-secondary">Book a Demo</button>
+          <button className="cta-primary">{m.hero.ctaTrial}</button>
+          <button className="cta-secondary">{m.hero.ctaDemo}</button>
         </div>
 
         <p
@@ -247,7 +247,7 @@ export function Hero() {
             transitionDelay: "0.8s",
           }}
         >
-          No credit card required
+          {m.hero.noCard}
         </p>
       </div>
 

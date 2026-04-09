@@ -1,8 +1,12 @@
 "use client";
 
 import { AnimateIn } from "./AnimateIn";
+import { useLocaleContext } from "@/context/LocaleContext";
 
 export function Technology() {
+  const { m } = useLocaleContext();
+  const t = m.technology;
+
   return (
     <section
       id="technology"
@@ -12,7 +16,6 @@ export function Technology() {
         background: "var(--bg-secondary)",
       }}
     >
-      {/* Grid texture */}
       <div className="grid-dark" style={{ position: "absolute", inset: 0, opacity: 0.3, pointerEvents: "none" }} />
 
       <div
@@ -24,7 +27,7 @@ export function Technology() {
         }}
       >
         <AnimateIn>
-          <span className="section-tag">Technology</span>
+          <span className="section-tag">{t.tag}</span>
         </AnimateIn>
 
         <AnimateIn delay={0.1}>
@@ -40,9 +43,9 @@ export function Technology() {
               maxWidth: "700px",
             }}
           >
-            Recruiting Is a Reasoning Problem.{" "}
+            {t.heading}{" "}
             <span style={{ color: "var(--accent)" }}>
-              We Built a Reasoning Engine.
+              {t.headingAccent}
             </span>
           </h2>
         </AnimateIn>
@@ -57,14 +60,10 @@ export function Technology() {
               marginBottom: "3.5rem",
             }}
           >
-            Traditional recruiting tools match keywords. But hiring decisions
-            aren&apos;t keyword problems. &quot;3 years of experience&quot; requires arithmetic.
-            &quot;0-to-1 experience&quot; requires semantic understanding. &quot;Public company
-            background&quot; requires world knowledge. MRE handles all of them.
+            {t.intro}
           </p>
         </AnimateIn>
 
-        {/* Row 1: MRE (wide) + BRIGHT (narrow) */}
         <AnimateIn delay={0.15}>
           <div
             className="bento-row bento-7-5"
@@ -72,7 +71,6 @@ export function Technology() {
               marginBottom: "1.25rem",
             }}
           >
-            {/* MRE Card — glass */}
             <div
               className="glass-card"
               style={{
@@ -100,7 +98,7 @@ export function Technology() {
                   marginBottom: "0.75rem",
                 }}
               >
-                Core Engine
+                {t.mreLabel}
               </div>
               <h3
                 style={{
@@ -110,7 +108,7 @@ export function Technology() {
                   marginBottom: "0.75rem",
                 }}
               >
-                MRE — Reasoning-First Matching
+                {t.mreTitle}
               </h3>
               <p
                 style={{
@@ -120,10 +118,7 @@ export function Technology() {
                   marginBottom: "1.5rem",
                 }}
               >
-                Our proprietary embedding model trained with reinforcement
-                learning for recruiting-specific reasoning. Not a wrapper around
-                GPT. A purpose-built engine for understanding what jobs really
-                need and which people truly match.
+                {t.mreBody}
               </p>
 
               <div
@@ -156,7 +151,7 @@ export function Technology() {
                       marginTop: "2px",
                     }}
                   >
-                    Traditional
+                    {t.traditional}
                   </span>
                   <span
                     style={{
@@ -165,8 +160,7 @@ export function Technology() {
                       lineHeight: 1.5,
                     }}
                   >
-                    &quot;3 years RLHF experience&quot; → keyword match → misses most
-                    qualified candidates
+                    {t.traditionalExample}
                   </span>
                 </div>
 
@@ -193,7 +187,7 @@ export function Technology() {
                       marginTop: "2px",
                     }}
                   >
-                    MRE
+                    {t.mreBadge}
                   </span>
                   <span
                     style={{
@@ -202,14 +196,12 @@ export function Technology() {
                       lineHeight: 1.5,
                     }}
                   >
-                    Understands &quot;3 years&quot; is arithmetic, &quot;RLHF&quot; includes related
-                    skills → finds truly matching candidates
+                    {t.mreExample}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* BRIGHT Card — amber accent block with glow */}
             <div
               style={{
                 background: "var(--accent)",
@@ -223,7 +215,6 @@ export function Technology() {
                 boxShadow: "0 0 60px rgba(245,158,11,0.15)",
               }}
             >
-              {/* Subtle radial highlight */}
               <div
                 style={{
                   position: "absolute",
@@ -247,7 +238,7 @@ export function Technology() {
                   position: "relative",
                 }}
               >
-                BRIGHT Benchmark
+                {t.brightLabel}
               </div>
               <div
                 className="stat-number"
@@ -270,19 +261,16 @@ export function Technology() {
                   position: "relative",
                 }}
               >
-                Worldwide among all embedding models on BRIGHT, the academic
-                benchmark for reasoning-intensive retrieval.
+                {t.brightCaption}
               </p>
             </div>
           </div>
         </AnimateIn>
 
-        {/* Row 2: Multi-Source (narrow) + Research (wide) */}
         <AnimateIn delay={0.3}>
           <div
             className="bento-row bento-5-7"
           >
-            {/* Multi-Source — glass card */}
             <div
               className="glass-card"
               style={{
@@ -310,7 +298,7 @@ export function Technology() {
                   marginBottom: "0.75rem",
                 }}
               >
-                Data Intelligence
+                {t.dataLabel}
               </div>
               <h3
                 style={{
@@ -320,7 +308,7 @@ export function Technology() {
                   marginBottom: "0.625rem",
                 }}
               >
-                Every Platform. One Profile.
+                {t.dataTitle}
               </h3>
               <p
                 style={{
@@ -330,9 +318,7 @@ export function Technology() {
                   marginBottom: "1.25rem",
                 }}
               >
-                Mira aggregates data from public sources, proprietary databases,
-                and your private talent pool. Cross-platform identity mapping
-                connects LinkedIn, GitHub, and social presence into a single picture.
+                {t.dataBody}
               </p>
 
               <div
@@ -342,7 +328,7 @@ export function Technology() {
                   flexWrap: "wrap",
                 }}
               >
-                {["LinkedIn", "GitHub", "Twitter", "Custom DB"].map((p) => (
+                {t.platforms.map((p) => (
                   <span
                     key={p}
                     style={{
@@ -361,7 +347,6 @@ export function Technology() {
               </div>
             </div>
 
-            {/* Research — glass card */}
             <div
               className="glass-card"
               style={{
@@ -393,7 +378,7 @@ export function Technology() {
                     marginBottom: "0.75rem",
                   }}
                 >
-                  Foundation
+                  {t.foundationLabel}
                 </div>
                 <h3
                   style={{
@@ -403,7 +388,7 @@ export function Technology() {
                     marginBottom: "0.625rem",
                   }}
                 >
-                  Research-Backed
+                  {t.foundationTitle}
                 </h3>
                 <p
                   style={{
@@ -413,9 +398,7 @@ export function Technology() {
                     marginBottom: "1.25rem",
                   }}
                 >
-                  4 published papers on arXiv covering reasoning-aware retrieval,
-                  test-time inference for embedding models, and recruiting-specific
-                  benchmarks.
+                  {t.foundationBody}
                 </p>
               </div>
 
@@ -426,12 +409,7 @@ export function Technology() {
                   flexWrap: "wrap",
                 }}
               >
-                {[
-                  "Reasoning-Aware Retrieval",
-                  "Test-Time Inference",
-                  "Recruiting Benchmarks",
-                  "Embedding RL",
-                ].map((paper) => (
+                {t.papers.map((paper) => (
                   <span
                     key={paper}
                     style={{

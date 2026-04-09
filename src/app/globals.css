@@ -153,6 +153,193 @@ body {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+/*
+ * Navbar desktop segments: never use inline `display:flex` on these — it overrides
+ * display:none and forces desktop links to show on narrow viewports.
+ * Breakpoint 1024px: below this, hamburger + sheet (tablet portrait still gets drawer).
+ */
+.nav-bar-desktop-links {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+.nav-bar-desktop-actions {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+}
+.nav-bar-mobile-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .nav-bar-desktop-links,
+  .nav-bar-desktop-actions {
+    display: flex;
+  }
+  .nav-bar-mobile-trigger {
+    display: none;
+  }
+}
+
+/* ─── Mobile nav sheet (below fixed bar) ─── */
+.nav-mobile-backdrop {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: rgba(12, 10, 9, 0.65);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  animation: nav-mobile-backdrop-in 0.22s ease-out both;
+}
+
+.nav-mobile-sheet {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  padding: 0 var(--container-px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav-mobile-sheet-inner {
+  pointer-events: auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 1rem 1.125rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-default);
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(20, 18, 17, 0.92) 45%,
+    rgba(12, 10, 9, 0.96) 100%
+  );
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(245, 158, 11, 0.06),
+    0 0 60px rgba(245, 158, 11, 0.04);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: nav-mobile-sheet-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.nav-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 52px;
+  padding: 0.625rem 0.25rem;
+  margin: 0 -0.25rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-mobile-link:last-of-type {
+  border-bottom: none;
+}
+
+.nav-mobile-link:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-mobile-link-index {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  min-width: 1.5rem;
+}
+
+.nav-mobile-link-chevron {
+  margin-left: auto;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.nav-mobile-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.5rem -0.5rem -0.5rem 0;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-mobile-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.nav-mobile-close:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes nav-mobile-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nav-mobile-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-mobile-backdrop,
+  .nav-mobile-sheet-inner {
+    animation: none;
+  }
+}
+
+/* Hide mobile menu layers on desktop (portal lives under body; no .mobile-only here) */
+@media (min-width: 1024px) {
+  .nav-mobile-backdrop,
+  .nav-mobile-sheet {
+    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
 /* ─── Section Tag ─── */
 .section-tag {
   font-family: var(--font-mono);

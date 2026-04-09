@@ -1,44 +1,35 @@
 "use client";
 
 import { AnimateIn } from "./AnimateIn";
+import { useLocaleContext } from "@/context/LocaleContext";
 
-const specialists = [
+const agentMeta = [
   {
-    name: "Demand Agent",
-    role: "Demand Analyst",
     color: "var(--agent-demand)",
     colorBg: "rgba(45,212,191,0.12)",
     glowClass: "glow-card glow-card-demand",
     hoverGlow: "0 0 40px rgba(45,212,191,0.12), 0 0 80px rgba(45,212,191,0.04)",
     letter: "D",
-    description:
-      "Breaks down the job requirement. Benchmarks it against real market data. Tells you when the brief is unrealistic — before you waste a week searching.",
   },
   {
-    name: "Market Agent",
-    role: "Market Scout",
     color: "var(--agent-market)",
     colorBg: "rgba(245,158,11,0.12)",
     glowClass: "glow-card glow-card-market",
     hoverGlow: "0 0 40px rgba(245,158,11,0.12), 0 0 80px rgba(245,158,11,0.04)",
     letter: "M",
-    description:
-      "Scans hiring trends, competitor moves, and talent flow signals. Knows which companies are growing, shrinking, or about to restructure.",
   },
   {
-    name: "Talent Agent",
-    role: "Talent Finder",
     color: "var(--agent-talent)",
     colorBg: "rgba(167,139,250,0.12)",
     glowClass: "glow-card glow-card-talent",
     hoverGlow: "0 0 40px rgba(167,139,250,0.12), 0 0 80px rgba(167,139,250,0.04)",
     letter: "T",
-    description:
-      "Searches across LinkedIn, GitHub, Twitter, and more. Merges identities across platforms. Builds a full picture of every candidate.",
   },
-];
+] as const;
 
 export function Solution() {
+  const { m } = useLocaleContext();
+
   return (
     <section
       id="product"
@@ -48,7 +39,6 @@ export function Solution() {
         background: "var(--bg-secondary)",
       }}
     >
-      {/* Subtle dot pattern */}
       <div className="dot-dark" style={{ position: "absolute", inset: 0, opacity: 0.5, pointerEvents: "none" }} />
 
       <div
@@ -60,7 +50,7 @@ export function Solution() {
         }}
       >
         <AnimateIn>
-          <span className="section-tag">The Solution</span>
+          <span className="section-tag">{m.solution.tag}</span>
         </AnimateIn>
 
         <AnimateIn delay={0.1}>
@@ -76,8 +66,8 @@ export function Solution() {
               maxWidth: "560px",
             }}
           >
-            Not Another Search Box.{" "}
-            <span style={{ color: "var(--accent)" }}>A Team.</span>
+            {m.solution.heading}{" "}
+            <span style={{ color: "var(--accent)" }}>{m.solution.headingAccent}</span>
           </h2>
         </AnimateIn>
 
@@ -91,13 +81,10 @@ export function Solution() {
               marginBottom: "3.5rem",
             }}
           >
-            Mira is a team of AI agents that works like a real recruiting team.
-            Three specialists with different perspectives — analyzing, scouting,
-            debating — to deliver candidates who actually fit.
+            {m.solution.intro}
           </p>
         </AnimateIn>
 
-        {/* Three specialists — glow cards */}
         <div
           style={{
             display: "grid",
@@ -106,96 +93,97 @@ export function Solution() {
             marginBottom: "2rem",
           }}
         >
-          {specialists.map((agent, i) => (
-            <AnimateIn key={i} delay={0.1 * (i + 2)} variant="scale-in">
-              <div
-                className={agent.glowClass}
-                style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                  borderRadius: "12px",
-                  padding: "1.75rem",
-                  height: "100%",
-                  border: "1px solid var(--border-default)",
-                  transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = agent.hoverGlow;
-                  e.currentTarget.style.borderColor = "var(--border-strong)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = "var(--border-default)";
-                }}
-              >
-                {/* Avatar + Role */}
+          {agentMeta.map((meta, i) => {
+            const agent = m.solution.agents[i];
+            return (
+              <AnimateIn key={i} delay={0.1 * (i + 2)} variant="scale-in">
                 <div
+                  className={meta.glowClass}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                    marginBottom: "1rem",
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                    borderRadius: "12px",
+                    padding: "1.75rem",
+                    height: "100%",
+                    border: "1px solid var(--border-default)",
+                    transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = meta.hoverGlow;
+                    e.currentTarget.style.borderColor = "var(--border-strong)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.borderColor = "var(--border-default)";
                   }}
                 >
                   <div
                     style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "50%",
-                      background: agent.colorBg,
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.8125rem",
-                      fontWeight: 700,
-                      color: agent.color,
-                      boxShadow: `0 0 16px ${agent.colorBg}`,
+                      gap: "0.75rem",
+                      marginBottom: "1rem",
                     }}
                   >
-                    {agent.letter}
-                  </div>
-                  <div>
                     <div
                       style={{
-                        fontSize: "1rem",
-                        fontWeight: 600,
-                        color: "var(--text-primary)",
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      {agent.name}
-                    </div>
-                    <div
-                      style={{
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "50%",
+                        background: meta.colorBg,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         fontFamily: "var(--font-mono)",
-                        fontSize: "0.6875rem",
-                        color: agent.color,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.04em",
+                        fontSize: "0.8125rem",
+                        fontWeight: 700,
+                        color: meta.color,
+                        boxShadow: `0 0 16px ${meta.colorBg}`,
                       }}
                     >
-                      {agent.role}
+                      {meta.letter}
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontSize: "1rem",
+                          fontWeight: 600,
+                          color: "var(--text-primary)",
+                          lineHeight: 1.2,
+                        }}
+                      >
+                        {agent.name}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.6875rem",
+                          color: meta.color,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.04em",
+                        }}
+                      >
+                        {agent.role}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    lineHeight: 1.65,
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  {agent.description}
-                </p>
-              </div>
-            </AnimateIn>
-          ))}
+                  <p
+                    style={{
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.65,
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    {agent.description}
+                  </p>
+                </div>
+              </AnimateIn>
+            );
+          })}
         </div>
 
-        {/* Convergence arrow visual */}
         <AnimateIn delay={0.5}>
           <div
             style={{
@@ -214,7 +202,6 @@ export function Solution() {
           </div>
         </AnimateIn>
 
-        {/* Roundtable — glowing dark card */}
         <AnimateIn delay={0.55}>
           <div
             className="glow-card"
@@ -266,7 +253,7 @@ export function Solution() {
                     color: "var(--text-primary)",
                   }}
                 >
-                  Roundtable
+                  {m.solution.roundtable}
                 </span>
                 <span
                   style={{
@@ -277,7 +264,7 @@ export function Solution() {
                     letterSpacing: "0.04em",
                   }}
                 >
-                  Coordinator
+                  {m.solution.coordinator}
                 </span>
               </div>
               <p
@@ -287,7 +274,7 @@ export function Solution() {
                   color: "var(--text-secondary)",
                 }}
               >
-                Brings the three agents together. Surfaces disagreements, runs structured debates, and produces a shortlist with clear reasoning — not a black-box output.
+                {m.solution.roundtableBody}
               </p>
             </div>
           </div>
